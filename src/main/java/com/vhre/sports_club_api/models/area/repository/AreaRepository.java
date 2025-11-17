@@ -1,4 +1,4 @@
-package com.vhre.sports_club_api.models.area;
+package com.vhre.sports_club_api.models.area.repository;
 
 import com.vhre.sports_club_api.models.area.model.Area;
 import org.springframework.data.jpa.repository.JpaRepository;

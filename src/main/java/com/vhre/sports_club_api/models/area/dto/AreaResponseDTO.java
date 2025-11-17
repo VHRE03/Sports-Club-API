@@ -1,4 +1,4 @@
-package com.vhre.sports_club_api.models.area.model.dto;
+package com.vhre.sports_club_api.models.area.dto;
 
 import lombok.Data;
 

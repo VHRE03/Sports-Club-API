@@ -1,7 +1,8 @@
 package com.vhre.sports_club_api.models.area.controller;
 
-import com.vhre.sports_club_api.models.area.model.dto.AreaRequestDTO;
-import com.vhre.sports_club_api.models.area.model.dto.AreaResponseDTO;
+import com.vhre.sports_club_api.models.area.dto.AreaRequestDTO;
+import com.vhre.sports_club_api.models.area.dto.AreaResponseDTO;
+import com.vhre.sports_club_api.models.area.dto.AreaUpdateDTO;
 import com.vhre.sports_club_api.models.area.service.AreaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -38,6 +39,11 @@ public class AreaController {
 	@PutMapping("/{id}")
 	public ResponseEntity<AreaResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody AreaRequestDTO dto) {
 		return ResponseEntity.ok(service.update(id, dto));
+	}
+
+	@PatchMapping("/{id}")
+	public AreaResponseDTO patch(@PathVariable UUID id, @Valid @RequestBody AreaUpdateDTO dto) {
+		return service.patch(id, dto);
 	}
 
 	@DeleteMapping("/{id}")
