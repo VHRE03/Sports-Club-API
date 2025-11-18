@@ -1,11 +1,15 @@
 package com.vhre.sports_club_api.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.servers.Server;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,20 +43,10 @@ public class SwaggerConfig {
 	}
 
 	@Bean
-	public OperationCustomizer operationCustomizer() {
-		return (operation, handlerMethod) -> {
-			// Ordenar por método HTTP y luego por path
-			String sortKey = getHttpMethodOrder(handlerMethod) + handlerMethod.getMethod().getName();
-			operation.addExtension("x-sort", sortKey);
-			return operation;
-		};
-	}
-
-	private String getHttpMethodOrder(HandlerMethod handlerMethod) {
-		if (handlerMethod.hasMethodAnnotation(GetMapping.class)) return "1";
-		if (handlerMethod.hasMethodAnnotation(PostMapping.class)) return "2";
-		if (handlerMethod.hasMethodAnnotation(PutMapping.class)) return "3";
-		if (handlerMethod.hasMethodAnnotation(DeleteMapping.class)) return "4";
-		return "5";
+	public GroupedOpenApi publicApi() {
+		return GroupedOpenApi.builder()
+			.group("sports-club")
+			.pathsToMatch("/api/**")
+			.build();
 	}
 }
