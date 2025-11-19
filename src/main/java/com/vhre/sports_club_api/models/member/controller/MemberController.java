@@ -1,7 +1,8 @@
 package com.vhre.sports_club_api.models.member.controller;
 
-import com.vhre.sports_club_api.models.member.model.dto.MemberRequestDTO;
-import com.vhre.sports_club_api.models.member.model.dto.MemberResponseDTO;
+import com.vhre.sports_club_api.models.member.dto.MemberRequestDTO;
+import com.vhre.sports_club_api.models.member.dto.MemberResponseDTO;
+import com.vhre.sports_club_api.models.member.dto.MemberUpdateDTO;
 import com.vhre.sports_club_api.models.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,14 +23,7 @@ import java.util.UUID;
 public class MemberController {
 	private final MemberService service;
 
-	@PostMapping(
-		consumes = {
-			MediaType.APPLICATION_JSON_VALUE,
-			MediaType.MULTIPART_FORM_DATA_VALUE
-		},
-		produces = MediaType.APPLICATION_JSON_VALUE
-	)
-	@Operation(summary = "Crear nuevo miembro", description = "Registra un nuevo miembro en la base de datos")
+	@PostMapping()
 	public ResponseEntity<MemberResponseDTO> create(@Valid @RequestBody MemberRequestDTO dto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
 	}
@@ -47,6 +41,11 @@ public class MemberController {
 	@PutMapping("/{id}")
 	public ResponseEntity<MemberResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody MemberRequestDTO dto) {
 		return ResponseEntity.ok(service.update(id, dto));
+	}
+
+	@PatchMapping("/{id}")
+	public MemberResponseDTO patch(@PathVariable UUID id, @Valid @RequestBody MemberUpdateDTO dto) {
+		return service.patch(id, dto);
 	}
 
 	@DeleteMapping("/{id}")

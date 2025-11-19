@@ -5,8 +5,8 @@ import lombok.*;
 
 import java.util.UUID;
 
-@Entity
 @Table(name = "area")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor

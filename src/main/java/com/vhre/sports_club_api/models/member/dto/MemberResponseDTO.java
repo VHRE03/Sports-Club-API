@@ -1,4 +1,4 @@
-package com.vhre.sports_club_api.models.member.model.dto;
+package com.vhre.sports_club_api.models.member.dto;
 
 import lombok.Data;
 

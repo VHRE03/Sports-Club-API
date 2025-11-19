@@ -1,8 +1,10 @@
 package com.vhre.sports_club_api.models.member.impl;
 
+import com.vhre.sports_club_api.models.member.dto.MemberUpdateDTO;
+import com.vhre.sports_club_api.models.member.mapper.MemberMapper;
 import com.vhre.sports_club_api.models.member.model.Member;
-import com.vhre.sports_club_api.models.member.model.dto.MemberRequestDTO;
-import com.vhre.sports_club_api.models.member.model.dto.MemberResponseDTO;
+import com.vhre.sports_club_api.models.member.dto.MemberRequestDTO;
+import com.vhre.sports_club_api.models.member.dto.MemberResponseDTO;
 import com.vhre.sports_club_api.models.member.repository.MemberRepository;
 import com.vhre.sports_club_api.models.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -19,34 +21,40 @@ import java.util.stream.Collectors;
 @Transactional
 public class MemberServiceImpl implements MemberService {
 	private final MemberRepository repository;
-	private final ModelMapper mapper;
+	private final MemberMapper mapper;
 
 	@Override
 	public MemberResponseDTO create(MemberRequestDTO dto) {
-		Member member = mapper.map(dto, Member.class);
+		Member member = mapper.toEntity(dto);
 		Member savedMember = repository.save(member);
-		return mapper.map(savedMember, MemberResponseDTO.class);
+		return mapper.toResponse(savedMember);
 	}
 
 	@Override
 	public MemberResponseDTO findById(UUID id) {
 		Member member = repository.findById(id).orElseThrow();
-		return mapper.map(member, MemberResponseDTO.class);
+		return mapper.toResponse(member);
 	}
 
 	@Override
 	public List<MemberResponseDTO> findAll() {
-		return repository.findAll().stream().map(
-			member -> mapper.map(member, MemberResponseDTO.class)
-		).collect(Collectors.toList());
+		return repository.findAll().stream().map(mapper::toResponse).toList();
 	}
 
 	@Override
 	public MemberResponseDTO update(UUID id, MemberRequestDTO dto) {
 		Member member = repository.findById(id).orElseThrow();
-		mapper.map(dto, member);
-		Member updatedMember = repository.save(member);
-		return mapper.map(updatedMember, MemberResponseDTO.class);
+		mapper.updateFromRequest(dto, member);
+		repository.save(member);
+		return mapper.toResponse(member);
+	}
+
+	@Override
+	public MemberResponseDTO patch(UUID id, MemberUpdateDTO dto){
+		Member member = repository.findById(id).orElseThrow();
+		mapper.updateFromPatch(dto, member);
+		repository.save(member);
+		return mapper.toResponse(member);
 	}
 
 	@Override
