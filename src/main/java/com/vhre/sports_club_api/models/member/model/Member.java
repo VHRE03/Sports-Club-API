@@ -1,10 +1,13 @@
 package com.vhre.sports_club_api.models.member.model;
 
+import com.vhre.sports_club_api.models.access_log.model.AccessLog;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Table(name = "member")
@@ -43,4 +46,8 @@ public class Member {
     @Column(nullable = false)
     @ColumnDefault("true")
     private boolean active = true;
+
+	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+	@ToString.Exclude
+	private List<AccessLog> access_logs = new ArrayList<>();
 }

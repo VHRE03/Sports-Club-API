@@ -1,8 +1,11 @@
 package com.vhre.sports_club_api.models.area.model;
 
+import com.vhre.sports_club_api.models.access_log.model.AccessLog;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Table(name = "area")
@@ -28,4 +31,8 @@ public class Area {
 
 	@Column(nullable = false, columnDefinition = "boolean default true")
 	private boolean active = true;
+
+	@OneToMany(mappedBy = "area", fetch = FetchType.LAZY)
+	@ToString.Exclude
+	private List<AccessLog> access_logs = new ArrayList<>();
 }
