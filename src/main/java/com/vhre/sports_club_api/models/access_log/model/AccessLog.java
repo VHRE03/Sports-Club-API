@@ -34,7 +34,7 @@ public class AccessLog {
 	private Area area;
 
 	@CreationTimestamp
-	@Column(nullable = false, updatable = false)
+	@Column(updatable = false)
 	private LocalDateTime access_datetime;
 
 	@Enumerated(EnumType.STRING)
